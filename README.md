@@ -74,4 +74,4 @@ async def main():
 asyncio.run(main())
 ```
 
-The `buffered_pipeline` ensures internal tasks are cleaned up on any exception.
+The `buffered_pipeline` ensures internal tasks are cancelled on any exception.
