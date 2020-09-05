@@ -7,14 +7,14 @@ def long_description():
 
 
 setuptools.setup(
-    name='asyncio-buffer-iterable',
+    name='asyncio-buffered-pipeline',
     version='0.0.0',
     author='Michal Charemza',
     author_email='michal@charemza.name',
-    description='Utility function to parallelize pipelines of Python async iterables/generators',
+    description='Parallelize pipelines of Python async iterables/generators',
     long_description=long_description(),
     long_description_content_type='text/markdown',
-    url='https://github.com/michalc/asyncio-buffer-iterable',
+    url='https://github.com/michalc/asyncio-buffered-pipeline',
     py_modules=[
         'asyncio_buffer_iterable',
     ],

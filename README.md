@@ -1,4 +1,4 @@
-# asyncio-buffer-iterable [![CircleCI](https://circleci.com/gh/michalc/asyncio-buffer-iterable.svg?style=shield)](https://circleci.com/gh/michalc/asyncio-buffer-iterable) [![Test Coverage](https://api.codeclimate.com/v1/badges/84661ec860980bc4b5ab/test_coverage)](https://codeclimate.com/github/michalc/asyncio-buffer-iterable/test_coverage)
+# asyncio-buffered-pipeline [![CircleCI](https://circleci.com/gh/michalc/asyncio-buffered-pipeline.svg?style=shield)](https://circleci.com/gh/michalc/asyncio-buffered-pipeline) [![Test Coverage](https://api.codeclimate.com/v1/badges/84661ec860980bc4b5ab/test_coverage)](https://codeclimate.com/github/michalc/asyncio-buffered-pipeline/test_coverage)
 
 Parallelise pipelines of Python async iterables/generators.
 
