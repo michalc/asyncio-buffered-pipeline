@@ -1,7 +1,7 @@
 import asyncio
 
-async def buffer_iterable(iterable, size=1):
-    queue = asyncio.Queue(maxsize=size)
+async def buffer_iterable(iterable, buffer_size=1):
+    queue = asyncio.Queue(maxsize=buffer_size)
 
     async def _iterate():
         try:
