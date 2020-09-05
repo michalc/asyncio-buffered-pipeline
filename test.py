@@ -96,3 +96,39 @@ class TestBufferIterable(TestCase):
             (6, 4, 2), (7, 5, 3), (8, 6, 4), (9, 7, 5), (10, 8, 6),
             (10, 9, 7), (10, 10, 8), (10, 10, 9), (10, 10, 10), (10, 10, 10),
         ])
+
+    @async_test
+    async def test_num_tasks(self):
+        num_gen_1 = 0
+        num_gen_2 = 0
+        num_gen_3 = 0
+
+        async def gen_1():
+            nonlocal num_gen_1
+            for value in range(0, 10):
+                yield
+                num_gen_1 += 1
+
+        async def gen_2(it):
+            nonlocal num_gen_2
+            async for value in it:
+                yield
+                num_gen_2 += 1
+
+        async def gen_3(it):
+            nonlocal num_gen_3
+            async for value in it:
+                yield
+                num_gen_3 += 1
+
+        it_1 = buffer_iterable(gen_1())
+        it_2 = buffer_iterable(gen_2(it_1))
+        it_3 = buffer_iterable(gen_3(it_2))
+
+        num_tasks = []
+        async for _ in it_3:
+            # Slight hack to wait for buffers to be full
+            await asyncio.sleep(0.02)
+            num_tasks.append(len(asyncio.all_tasks()))
+
+        self.assertEqual(num_tasks, [4, 4, 4, 4, 3, 3, 2, 2, 1, 1])
