@@ -189,8 +189,7 @@ class TestBufferIterable(TestCase):
             it_2 = buffer_iterable(gen_2(it_1))
             it_3 = buffer_iterable(gen_3(it_2))
             it_4 = buffer_iterable(gen_4(it_3))
-            async for _ in it_4:
-                pass
+            [value async for value in it_4]
 
         task = asyncio.create_task(pipeline())
         await event.wait()
