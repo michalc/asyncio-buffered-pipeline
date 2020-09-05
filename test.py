@@ -99,27 +99,17 @@ class TestBufferIterable(TestCase):
 
     @async_test
     async def test_num_tasks(self):
-        num_gen_1 = 0
-        num_gen_2 = 0
-        num_gen_3 = 0
-
         async def gen_1():
-            nonlocal num_gen_1
             for value in range(0, 10):
                 yield
-                num_gen_1 += 1
 
         async def gen_2(it):
-            nonlocal num_gen_2
             async for value in it:
                 yield
-                num_gen_2 += 1
 
         async def gen_3(it):
-            nonlocal num_gen_3
             async for value in it:
                 yield
-                num_gen_3 += 1
 
         it_1 = buffer_iterable(gen_1())
         it_2 = buffer_iterable(gen_2(it_1))
