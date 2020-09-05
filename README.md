@@ -2,6 +2,11 @@
 
 Parallelise pipelines of Python async iterables/generators.
 
+## Installation
+
+```bash
+pip install asyncio-buffered-pipeline
+```
 
 ## Usage / What problem does this solve?
 
