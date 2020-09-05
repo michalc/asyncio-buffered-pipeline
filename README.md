@@ -1,6 +1,6 @@
 # asyncio-buffer-iterable [![CircleCI](https://circleci.com/gh/michalc/asyncio-buffer-iterable.svg?style=shield)](https://circleci.com/gh/michalc/asyncio-buffer-iterable) [![Test Coverage](https://api.codeclimate.com/v1/badges/84661ec860980bc4b5ab/test_coverage)](https://codeclimate.com/github/michalc/asyncio-buffer-iterable/test_coverage)
 
-Utility function to parallelise pipelines of Python async iterables/generators.
+Parallelise pipelines of Python async iterables/generators.
 
 
 ## Usage / What problem does this solve?
@@ -36,11 +36,11 @@ async def main():
 asyncio.run(main())
 ```
 
-The function allows you to make to a small change to the pipeline, passing each generator to `buffer_iterable`, to parallelise the generators to reduce this to (just over) 12 seconds.
+The `buffered_pipeline` function allows you to make to a small change, passing each generator through its return value, to parallelise the generators to reduce this to (just over) 12 seconds.
 
 ```python
 import asyncio
-from asyncio_buffer_iterable import buffer_iterable
+from asyncio_buffer_iterable import buffered_pipeline
 
 async def gen_1():
     for value in range(0, 10):
@@ -58,6 +58,7 @@ async def gen_3(it):
         yield value + 3
 
 async def main():
+    buffer_iterable = buffered_pipeline()
     it_1 = buffer_iterable(gen_1())
     it_2 = buffer_iterable(gen_2(it_1))
     it_3 = buffer_iterable(gen_3(it_2))
@@ -67,3 +68,5 @@ async def main():
 
 asyncio.run(main())
 ```
+
+The `buffered_pipeline` ensures internal tasks are cleaned up on any exception.

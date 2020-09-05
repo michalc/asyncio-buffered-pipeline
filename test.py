@@ -3,7 +3,7 @@ from unittest import (
     TestCase,
 )
 
-from asyncio_buffer_iterable import buffer_iterable
+from asyncio_buffer_iterable import buffered_pipeline
 
 
 def async_test(func):
@@ -30,6 +30,7 @@ class TestBufferIterable(TestCase):
             async for value in it:
                 yield value + 3
 
+        buffer_iterable = buffered_pipeline()
         it_1 = buffer_iterable(gen_1())
         it_2 = buffer_iterable(gen_2(it_1))
         it_3 = buffer_iterable(gen_3(it_2))
@@ -51,6 +52,7 @@ class TestBufferIterable(TestCase):
             async for value in it:
                 yield value + 3
 
+        buffer_iterable = buffered_pipeline()
         it_1 = buffer_iterable(gen_1())
         it_2 = gen_2(it_1)
         it_3 = buffer_iterable(gen_3(it_2))
@@ -82,6 +84,7 @@ class TestBufferIterable(TestCase):
                 yield
                 num_gen_3 += 1
 
+        buffer_iterable = buffered_pipeline()
         it_1 = buffer_iterable(gen_1())
         it_2 = buffer_iterable(gen_2(it_1))
         it_3 = buffer_iterable(gen_3(it_2))
@@ -111,6 +114,7 @@ class TestBufferIterable(TestCase):
             async for value in it:
                 yield
 
+        buffer_iterable = buffered_pipeline()
         it_1 = buffer_iterable(gen_1())
         it_2 = buffer_iterable(gen_2(it_1))
         it_3 = buffer_iterable(gen_3(it_2))
@@ -122,3 +126,37 @@ class TestBufferIterable(TestCase):
             num_tasks.append(len(asyncio.all_tasks()))
 
         self.assertEqual(num_tasks, [4, 4, 4, 4, 3, 3, 2, 2, 1, 1])
+
+    @async_test
+    async def test_exception_propagates(self):
+        class MyException(Exception):
+            pass
+
+        async def gen_1():
+            for value in range(0, 10):
+                yield
+
+        async def gen_2(it):
+            async for value in it:
+                yield
+
+        async def gen_3(it):
+            async for value in it:
+                yield
+                raise MyException()
+
+        async def gen_4(it):
+            async for value in it:
+                yield
+
+        buffer_iterable = buffered_pipeline()
+        it_1 = buffer_iterable(gen_1())
+        it_2 = buffer_iterable(gen_2(it_1))
+        it_3 = buffer_iterable(gen_3(it_2))
+        it_4 = buffer_iterable(gen_4(it_3))
+
+        with self.assertRaises(MyException):
+            async for _ in it_4:
+                pass
+
+        self.assertEqual(1, len(asyncio.all_tasks()))
