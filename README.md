@@ -33,7 +33,7 @@ async def main():
     async for val in it_3:
         print(val)
 
-asyncio.run(main)
+asyncio.run(main())
 ```
 
 The function allows you to make to a small change to the pipeline, passing each generator to `buffer_iterable`, to parallelise the generators to reduce this to (just over) 12 seconds.
@@ -65,5 +65,5 @@ async def main():
     async for val in it_3:
         print(val)
 
-asyncio.run(main)
+asyncio.run(main())
 ```
