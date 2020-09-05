@@ -1,0 +1,115 @@
+version: 2
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test-3.8.3
+      - test-3.8.2
+      - test-3.8.1
+      - test-3.8.0
+      - test-3.7.7
+      - test-3.7.4
+      - test-3.7.3
+      - test-3.7.2
+      - test-3.7.1
+      - test-3.7.0
+jobs:
+  test-3.8.3:
+    docker:
+      - image: python:3.8.3
+    steps:
+      - checkout
+      - run:
+          name: Install coverage and reporter
+          command: |
+            pip install coverage==4.5.2
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - run:
+          name: Run tests
+          command: |
+            ./cc-test-reporter before-build
+            coverage run -m unittest -vb
+            coverage xml -i
+            ./cc-test-reporter after-build --exit-code $?
+  test-3.8.2: &template
+    docker:
+      - image: python:3.8.2
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: |
+            python -m unittest -vb
+  test-3.8.1:
+    <<: *template
+    docker:
+      - image: python:3.8.1
+  test-3.8.0:
+    <<: *template
+    docker:
+      - image: python:3.8.0
+  test-3.7.7:
+    <<: *template
+    docker:
+      - image: python:3.7.7
+  test-3.7.6:
+    <<: *template
+    docker:
+      - image: python:3.7.6
+  test-3.7.5:
+    <<: *template
+    docker:
+      - image: python:3.7.5
+  test-3.7.4:
+    <<: *template
+    docker:
+      - image: python:3.7.4
+  test-3.7.3:
+    <<: *template
+    docker:
+      - image: python:3.7.3
+  test-3.7.2:
+    <<: *template
+    docker:
+      - image: python:3.7.2
+  test-3.7.1:
+    <<: *template
+    docker:
+      - image: python:3.7.1
+  test-3.7.0:
+    <<: *template
+    docker:
+      - image: python:3.7.0
+  test-3.6.10:
+    <<: *template
+    docker:
+      - image: python:3.6.10
+  test-3.6.9:
+    <<: *template
+    docker:
+      - image: python:3.6.9
+  test-3.6.8:
+    <<: *template
+    docker:
+      - image: python:3.6.8
+  test-3.6.7:
+    <<: *template
+    docker:
+      - image: python:3.6.7
+  test-3.6.6:
+    <<: *template
+    docker:
+      - image: python:3.6.6
+  test-3.6.5:
+    <<: *template
+    docker:
+      - image: python:3.6.5
+  test-3.6.4:
+    <<: *template
+    docker:
+      - image: python:3.6.4
+  test-3.6.3:
+    <<: *template
+    docker:
+      - image: python:3.6.3

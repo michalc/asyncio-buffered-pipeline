@@ -18,7 +18,7 @@ setuptools.setup(
     py_modules=[
         'asyncio_buffer_iterable',
     ],
-    python_requires='>=3.6.3',
+    python_requires='>=3.7.0',
     classifiers=[
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
