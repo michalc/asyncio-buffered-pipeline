@@ -32,10 +32,10 @@ class TestBufferIterable(TestCase):
 
         it_1 = buffer_iterable(gen_1())
         it_2 = buffer_iterable(gen_2(it_1))
-        it_3 = buffer_iterable(gen_2(it_2))
+        it_3 = buffer_iterable(gen_3(it_2))
 
         values = [value async for value in it_3]
-        self.assertEqual(values, [0, 4, 8, 12, 16, 20, 24, 28, 32, 36])
+        self.assertEqual(values, [3, 5, 7, 9, 11, 13, 15, 17, 19, 21])
 
     @async_test
     async def test_chain_some_buffered(self):
@@ -53,10 +53,10 @@ class TestBufferIterable(TestCase):
 
         it_1 = buffer_iterable(gen_1())
         it_2 = gen_2(it_1)
-        it_3 = buffer_iterable(gen_2(it_2))
+        it_3 = buffer_iterable(gen_3(it_2))
 
         values = [value async for value in it_3]
-        self.assertEqual(values, [0, 4, 8, 12, 16, 20, 24, 28, 32, 36])
+        self.assertEqual(values, [3, 5, 7, 9, 11, 13, 15, 17, 19, 21])
 
     @async_test
     async def test_chain_parallel(self):
