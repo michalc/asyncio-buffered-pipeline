@@ -16,7 +16,7 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     url='https://github.com/michalc/asyncio-buffered-pipeline',
     py_modules=[
-        'asyncio_buffer_iterable',
+        'asyncio_buffered_pipeline',
     ],
     python_requires='>=3.7.0',
     classifiers=[

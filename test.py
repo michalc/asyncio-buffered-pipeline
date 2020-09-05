@@ -3,7 +3,7 @@ from unittest import (
     TestCase,
 )
 
-from asyncio_buffer_iterable import buffered_pipeline
+from asyncio_buffered_pipeline import buffered_pipeline
 
 
 def async_test(func):
