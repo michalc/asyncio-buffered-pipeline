@@ -1,2 +1,3 @@
-# buffer-iterable
-Parallelise pipelines of Python async iterators/generators
+# asyncio-iterate-in-new-task
+
+Utility function to parallelise pipelines of Python async iterators/generators
