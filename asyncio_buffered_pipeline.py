@@ -28,6 +28,7 @@ def buffered_pipeline():
         except BaseException as exception:
             for task in tasks:
                 task.cancel()
+            tasks.clear()
             raise
 
     return _buffer_iterable
