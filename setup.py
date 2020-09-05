@@ -18,7 +18,7 @@ setuptools.setup(
     py_modules=[
         'asyncio_buffered_pipeline',
     ],
-    python_requires='>=3.7.0',
+    python_requires='>=3.7.1',
     classifiers=[
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',

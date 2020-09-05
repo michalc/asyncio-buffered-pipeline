@@ -12,7 +12,6 @@ workflows:
       - test-3.7.3
       - test-3.7.2
       - test-3.7.1
-      - test-3.7.0
 jobs:
   test-3.8.3:
     docker:
@@ -77,10 +76,6 @@ jobs:
     <<: *template
     docker:
       - image: python:3.7.1
-  test-3.7.0:
-    <<: *template
-    docker:
-      - image: python:3.7.0
   test-3.6.10:
     <<: *template
     docker:

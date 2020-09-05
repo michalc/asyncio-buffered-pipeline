@@ -160,3 +160,44 @@ class TestBufferIterable(TestCase):
                 pass
 
         self.assertEqual(1, len(asyncio.all_tasks()))
+
+    @async_test
+    async def test_cancellation_propagates(self):
+        event = asyncio.Event()
+
+        async def gen_1():
+            for value in range(0, 10):
+                yield
+
+        async def gen_2(it):
+            async for value in it:
+                yield
+
+        async def gen_3(it):
+            async for value in it:
+                yield
+                event.set()
+                await asyncio.Future()
+
+        async def gen_4(it):
+            async for value in it:
+                yield
+
+        async def pipeline():
+            buffer_iterable = buffered_pipeline()
+            it_1 = buffer_iterable(gen_1())
+            it_2 = buffer_iterable(gen_2(it_1))
+            it_3 = buffer_iterable(gen_3(it_2))
+            it_4 = buffer_iterable(gen_4(it_3))
+            async for _ in it_4:
+                pass
+
+        task = asyncio.create_task(pipeline())
+        await event.wait()
+        task.cancel()
+        try:
+            await task
+        except asyncio.CancelledError:
+            pass
+
+        self.assertEqual(1, len(asyncio.all_tasks()))

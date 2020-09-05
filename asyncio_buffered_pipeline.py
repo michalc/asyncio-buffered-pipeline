@@ -25,7 +25,7 @@ def buffered_pipeline():
                 if exception is not None:
                     raise exception from None
                 yield value
-        except Exception as exception:
+        except BaseException as exception:
             for task in tasks:
                 task.cancel()
             raise
