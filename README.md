@@ -83,3 +83,15 @@ The default buffer size is 1. This is suitable if each iteration takes approxima
 ```python
 it = buffer_iterable(gen(), buffer_size=2)
 ```
+
+## Features
+
+- Only one task is created for each `buffer_iterable`, in which the iterable is iterated over, with its values stored in an internal buffer.
+
+- All the tasks of the pipeline are cancelled if any of the generators raise an exception.
+
+- If a generator raises an exception, the exception is propagated to calling code.
+
+- The buffer size of each step in the pipeline is configurable.
+
+- The "chaining" is not abstracted away. You still have full control over the arguments passed to each step, and you don't need to buffer each iterable in the pipeline if you don't want to: just don't pass those through `buffer_iterable`.
