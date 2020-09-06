@@ -69,20 +69,20 @@ class TestBufferIterable(TestCase):
         async def gen_1():
             nonlocal num_gen_1
             for value in range(0, 10):
-                yield
                 num_gen_1 += 1
+                yield
 
         async def gen_2(it):
             nonlocal num_gen_2
             async for value in it:
-                yield
                 num_gen_2 += 1
+                yield
 
         async def gen_3(it):
             nonlocal num_gen_3
             async for value in it:
-                yield
                 num_gen_3 += 1
+                yield
 
         buffer_iterable = buffered_pipeline()
         it_1 = buffer_iterable(gen_1())
@@ -96,8 +96,8 @@ class TestBufferIterable(TestCase):
             num_done.append((num_gen_1, num_gen_2, num_gen_3))
 
         self.assertEqual(num_done, [
-            (6, 4, 2), (7, 5, 3), (8, 6, 4), (9, 7, 5), (10, 8, 6),
-            (10, 9, 7), (10, 10, 8), (10, 10, 9), (10, 10, 10), (10, 10, 10),
+            (4, 3, 2), (5, 4, 3), (6, 5, 4), (7, 6, 5), (8, 7, 6),
+            (9, 8, 7), (10, 9, 8), (10, 10, 9), (10, 10, 10), (10, 10, 10),
         ])
 
     @async_test
@@ -125,7 +125,7 @@ class TestBufferIterable(TestCase):
             await asyncio.sleep(0.02)
             num_tasks.append(len(asyncio.all_tasks()))
 
-        self.assertEqual(num_tasks, [4, 4, 4, 4, 3, 3, 2, 2, 1, 1])
+        self.assertEqual(num_tasks, [4, 4, 4, 4, 4, 4, 4, 3, 2, 1])
 
     @async_test
     async def test_exception_propagates(self):
@@ -221,7 +221,7 @@ class TestBufferIterable(TestCase):
             await asyncio.sleep(0.02)
             num_gens.append(num_gen)
 
-        self.assertEqual(num_gens, [3, 4, 5, 6, 7, 8, 9, 10, 10, 10])
+        self.assertEqual(num_gens, [2, 3, 4, 5, 6, 7, 8, 9, 10, 10])
 
     @async_test
     async def test_bigger_bufsize(self):
@@ -243,4 +243,4 @@ class TestBufferIterable(TestCase):
             await asyncio.sleep(0.02)
             num_gens.append(num_gen)
 
-        self.assertEqual(num_gens, [4, 5, 6, 7, 8, 9, 10, 10, 10, 10])
+        self.assertEqual(num_gens, [3, 4, 5, 6, 7, 8, 9, 10, 10, 10])
