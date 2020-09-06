@@ -50,7 +50,9 @@ def buffered_pipeline():
             try:
                 while True:
                     await queue_space()
-                    queue_put((None, await iterator.__anext__()))
+                    value = await iterator.__anext__()
+                    queue_put((None, value))
+                    value = None  # So value can be garbage collected
             except Exception as exception:
                 queue_put((exception, None))
 
@@ -63,6 +65,7 @@ def buffered_pipeline():
                 if exception is not None:
                     raise exception from None
                 yield value
+                value = None  # So value can be garbage collected
         except StopAsyncIteration:
             pass
         except BaseException as exception:
