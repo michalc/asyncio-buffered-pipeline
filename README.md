@@ -45,7 +45,7 @@ The `buffered_pipeline` function allows you to make to a small change, passing e
 
 ```python
 import asyncio
-from asyncio_buffer_iterable import buffered_pipeline
+from asyncio_buffered_pipeline import buffered_pipeline
 
 async def gen_1():
     for value in range(0, 10):
