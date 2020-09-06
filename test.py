@@ -199,6 +199,7 @@ class TestBufferIterable(TestCase):
         except asyncio.CancelledError:
             pass
 
+        await asyncio.sleep(0.2)
         self.assertEqual(1, len(asyncio.all_tasks()))
 
     @async_test

@@ -42,6 +42,7 @@ def buffered_pipeline():
         return _space, _empty, _get, _put
 
     async def _buffer_iterable(iterable, buffer_size=1):
+        nonlocal tasks
         queue_space, queue_empty, queue_get, queue_put = queue(buffer_size)
         iterator = iterable.__aiter__()
 
@@ -51,8 +52,6 @@ def buffered_pipeline():
                     await queue_space()
                     value = await iterator.__anext__()
                     queue_put((None, value))
-            except asyncio.CancelledError:
-                raise
             except Exception as exception:
                 queue_put((exception, None))
 
@@ -70,7 +69,13 @@ def buffered_pipeline():
         except BaseException as exception:
             for task in tasks:
                 task.cancel()
-            tasks.clear()
+            all_tasks = tasks
+            tasks = []
+            for task in all_tasks:
+                try:
+                    await task
+                except asyncio.CancelledError:
+                    pass
             raise
 
     return _buffer_iterable
