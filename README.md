@@ -10,7 +10,7 @@ pip install asyncio-buffered-pipeline
 
 ## Usage / What problem does this solve?
 
-If you have a pipeline of async generators, even though each is async, only one runs at any given time. For example, the below runs in (just over) 30 seconds.
+If you have a chain of async generators, even though each is async, only one runs at any given time. For example, the below runs in (just over) 30 seconds.
 
 ```python
 import asyncio
