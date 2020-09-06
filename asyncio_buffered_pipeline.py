@@ -50,8 +50,7 @@ def buffered_pipeline():
             try:
                 while True:
                     await queue_space()
-                    value = await iterator.__anext__()
-                    queue_put((None, value))
+                    queue_put((None, await iterator.__anext__()))
             except Exception as exception:
                 queue_put((exception, None))
 
