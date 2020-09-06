@@ -53,7 +53,7 @@ def buffered_pipeline():
                     value = await iterator.__anext__()
                     queue_put((None, value))
                     value = None  # So value can be garbage collected
-            except Exception as exception:
+            except BaseException as exception:
                 queue_put((exception, None))
 
         task = asyncio.create_task(_iterate())
