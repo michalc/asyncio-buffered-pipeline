@@ -20,8 +20,8 @@ def buffered_pipeline():
         async def _space():
             await until_space.wait()
 
-        def _empty():
-            return not bool(_queue)
+        def _has_items():
+            return bool(_queue)
 
         async def _get():
             nonlocal at_least_one_in_queue
@@ -39,11 +39,11 @@ def buffered_pipeline():
             if len(_queue) >= size:
                 until_space = asyncio.Event()
 
-        return _space, _empty, _get, _put
+        return _space, _has_items, _get, _put
 
     async def _buffer_iterable(iterable, buffer_size=1):
         nonlocal tasks
-        queue_space, queue_empty, queue_get, queue_put = queue(buffer_size)
+        queue_space, queue_has_items, queue_get, queue_put = queue(buffer_size)
         iterator = iterable.__aiter__()
 
         async def _iterate():
@@ -60,7 +60,7 @@ def buffered_pipeline():
         tasks.append(task)
 
         try:
-            while not queue_empty() or not task.done():
+            while queue_has_items() or task:
                 exception, value = await queue_get()
                 if exception is not None:
                     raise exception from None
