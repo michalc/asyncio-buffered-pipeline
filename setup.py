@@ -8,7 +8,7 @@ def long_description():
 
 setuptools.setup(
     name='asyncio-buffered-pipeline',
-    version='0.0.5',
+    version='0.0.6',
     author='Michal Charemza',
     author_email='michal@charemza.name',
     description='Parallelize pipelines of Python async iterables/generators',
