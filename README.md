@@ -75,3 +75,11 @@ asyncio.run(main())
 ```
 
 The `buffered_pipeline` ensures internal tasks are cancelled on any exception.
+
+### Buffer size
+
+The default buffer size is 1. This is suitable if each iteration takes approximately the same amount of time. If this is not the case, you may wish to change it using the `buffer_size` parameter of `buffer_iterable`.
+
+```python
+it = buffer_iterable(gen(), buffer_size=2)
+```
