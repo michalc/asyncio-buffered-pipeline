@@ -6,11 +6,15 @@ def buffered_pipeline():
 
     def queue(size):
         # The regular asyncio.queue doesn't have a function to wait for space
-        # in the queue, which we need so we don't iterate upstream until there
-        # is space. We also can guarantee there will be at most one getter
-        # and putter at any one time, and that _put won't be called until
-        # there is space in the queue, so we can have much simpler code than
-        # asyncio.Queue
+        # in the queue without also immediately putting an item into it, which
+        # would mean effective minimum buffer_size is 2: an item in the queue
+        # and in memory waiting to put into it. To allow a buffer_size of 1,
+        # we need to check there is space _before_ fetching the item from
+        # upstream. This requires a custom queue implementation.
+        # 
+        # We also can guarantee there will be at most one getter and putter at
+        # any one time, and that _put won't be called until there is space in
+        # the queue, so we can have much simpler code than asyncio.Queue
 
         _queue = collections.deque()
         at_least_one_in_queue = asyncio.Event()
